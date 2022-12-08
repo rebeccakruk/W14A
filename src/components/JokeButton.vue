@@ -1,49 +1,32 @@
 <template>
     <div>
-        <LoudJoke v-if="(joke, index)" :key="index" :joke="joke" @click="loudJoke" />
-
-        <SnakeJoke v-if="joke in jokes" :key="joke" @click="snakeJoke" />
-        <button>Random Joke</button>
-        {{ jokes }}
+        <button @click="getJoke">Normal Joke</button>
+        <h2>{{ normalJoke }}</h2>
     </div>
 </template>
 
 <script>
-import axios from "axios";
-import SnakeJoke from "@/components/SnakeJoke.vue";
-import LoudJoke from "@/components/LoudJoke.vue";
-// import cookies from "vue-cookies";
 
 export default {
     name: "JokeButton",
-    components: {
-        SnakeJoke,
-        LoudJoke
+    props: {
+        normalJoke: String,
     },
     data() {
         return {
-            jokes: String
+            displayNormalJoke: Boolean,
         }
     },
     methods: {
-        handleJoke(jokes) {
-            console.log(jokes);
+        getJoke() {
+            console.log(this.normalJoke);
         }
     },
     mounted() {
-        axios.request({
-            url: "https://geek-jokes.sameerkumar.website/api?format=json",
-            method: "GET"
-        }).then((response) => {
-            this.jokes = response.data;
-        }).catch((error) => {
-            console.log(error);
-        })
-        this.$root.$on(`loudJoke`, this.handleJoke);
-        this.$root.$on(`snakeJoke`, this.handleJoke);
-    },
-
+        this.$root.$emit(`generateJoke`, this.normalJoke);
+    }
 }
+
 </script>
 
 <style scoped>

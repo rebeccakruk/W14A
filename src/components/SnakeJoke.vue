@@ -1,27 +1,37 @@
 <template>
     <div>
-        <button @click="snakeJokes">Snake Joke</button>
-        {{ snakeFunny }}
+        <!-- <button @click.once="snakeJokes">Snake_Joke</button> -->
+        <h2>{{ snakeFunny.replaceAll(' ', '_') }}</h2>
+
     </div>
 </template>
 
 <script>
 export default {
     name: "SnakeJoke",
+    props: {
+        snakeFunny: String,
+    },
     data() {
         return {
-            snakeFunny: String,
+            displaySnakeJoke: Boolean,
         }
     },
     methods: {
         snakeJokes() {
-            let doesInclude = this.snake.includes(`snake`);
-            if (doesInclude === true) {
-                this.$root.$emit(`snakeJoke`, this.snakeFunny);
+            if (this.displaySnakeJoke === true) {
+                this.snakeFunny.replaceAll(' ', '_');
+                console.log(this.snakeFunny);
             }
+            this.$emit(`snakeJokes`, this.snakeFunny);
+            this.$emit(`snakeJokes`, this.displaySnakeJoke);
         }
-    }
+    },
 }
+
+
+
+
 </script>
 
 <style scoped>

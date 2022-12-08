@@ -1,8 +1,7 @@
 <template>
     <div>
-        <button @click="loudJoke">Loud Joke</button>
-        <h2>{{ loudFunny }}</h2>
-
+        <button @click="loudJoke">LOUD JOKE</button>
+        <h2>{{ loudFunny.toUpperCase() }}</h2>
     </div>
 </template>
 
@@ -12,15 +11,22 @@ export default {
     props: {
         loudFunny: String,
     },
+    data() {
+        return {
+            loudJokes: Boolean,
+        }
+    },
     methods: {
         loudJoke() {
-            let doesInclude = this.joke.includes(`loud`);
-            if (doesInclude === true) {
-                this.$root.$emit(`loudJoke`, this.loudJoke);
-            }
+            console.log(this.loudFunny);
+            console.log(this.loudJokes);
         }
-    }
+    },
+    mounted() {
+        this.$root.$emit(`makeCaps`, this.loudFunny);
+    },
 }
+
 
 </script>
 
