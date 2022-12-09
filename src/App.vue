@@ -1,14 +1,12 @@
 <template>
   <div id="app">
-    <button @click.once="normalJoke">Normal Joke</button>
-    <button @click.once="loudJokes">LOUD JOKES</button>
-    <button @click.once="snakeJokes">Snake_Joke</button>
-    <!-- <button @click="newJoke">New Joke</button> -->
-    <SnakeJoke :class="snake" v-for="(snake, i) in jokes" :key="i" :snakeFunny="snake" />
+    <SnakeJoke :class="snakeJokes" v-for="snake in jokes" :key="snake" :snakeFunny="snake" />
     <JokeButton v-for="(normal, index) in jokes" :key="index" :normalJoke="normal" />
     <LoudJoke v-for="(loud, capJoke) in jokes" :key="capJoke" :loudFunny="loud" />
+    <button @click="newJoke()">New Joke</button>
   </div>
 </template>
+@styleSnake="callback"
 
 <script>
 import axios from "axios";
@@ -27,38 +25,29 @@ export default {
   data() {
     return {
       jokes: [],
-      isDisplaySnakeJoke: true,
     }
   },
   methods: {
-    normalJoke() {
-      this.displayNormalJoke = !this.displayNormalJoke;
-    },
     snakeJokes() {
-      this.displaySnakeJoke = !this.displayNormalJoke;
+      this.displaySnakeJoke = !this.displaySnakeJoke;
+      console.log(this.displaySnakeJoke);
     },
-    loudJokes() {
-      this.displayLoudJoke = !this.displayLoudJoke;
-    },
-  },
-  mounted() {
-    axios
-      .request({
+    newJoke() {
+      axios.request({
         url: "https://geek-jokes.sameerkumar.website/api?format=json",
         method: "GET",
       })
-      .then((response) => {
-        this.jokes = response.data;
-        console.log(`where is this coming from`);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    this.$root.$on('generateJoke', this.normalJoke);
-    this.$root.$on('makeCaps', this.LoudJoke);
-    this.$root.$on(`snakeIt`, this.displaySnakeJoke);
-    this.$root.$on(`snakeIt`, this.snakeFunny);
-  },
+        .then((response) => {
+          this.jokes = response.data;
+          console.log(this.jokes);
+        })
+        .catch((error) => {
+          console.log(error);
+        }),
+        this.$root.$on(`styleSnake`, this.snakeFunny);
+      this.$root.$on(`plainJoke`, this.normalJoke)
+    }
+  }
 }
 
 </script>

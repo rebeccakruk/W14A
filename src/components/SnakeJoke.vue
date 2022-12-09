@@ -1,12 +1,12 @@
 <template>
     <div>
-        <!-- <button @click.once="snakeJokes">Snake_Joke</button> -->
-        <h2>{{ snakeFunny.replaceAll(' ', '_') }}</h2>
-
+        <button @click="$emit(`styleSnake`)">Snake_Joke</button>
+        <h2 v-if="(isSnake = true)">{{ snakeFunny.replaceAll(' ', '_') }}</h2>
     </div>
 </template>
 
 <script>
+import cookies from 'vue-cookies';
 export default {
     name: "SnakeJoke",
     props: {
@@ -14,17 +14,29 @@ export default {
     },
     data() {
         return {
-            displaySnakeJoke: Boolean,
+            isSnake: false,
         }
     },
     methods: {
-        snakeJokes() {
-            if (this.displaySnakeJoke === true) {
-                this.snakeFunny.replaceAll(' ', '_');
-                console.log(this.snakeFunny);
+        isSnakeOn() {
+            this.isSnake = !this.isSnake;
+            console.log(this.isSnake);
+        },
+        emitSnakeFunny() {
+            this.$root.$emit(`snakeFunny`, this.snakeFunny)
+            cookies.set('styleSnake', "Snake_Joke");
+        },
+        styleSnake() {
+            let styleSnake = cookies.get(`styleSnake`);
+            if (styleSnake == 'Snake_Joke') {
+                'Snake_Joke'.replaceAll(' ', '_');
             }
-            this.$emit(`snakeJokes`, this.snakeFunny);
-            this.$emit(`snakeJokes`, this.displaySnakeJoke);
+        }
+    },
+    mounted() {
+        let styleSnake = cookies.get(`styleSnake`);
+        if (styleSnake == 'Snake_Joke') {
+            this.$root.$emit(`styleSnake`, this.snakeFunny);
         }
     },
 }

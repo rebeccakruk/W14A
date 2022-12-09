@@ -11,20 +11,11 @@ export default {
     props: {
         loudFunny: String,
     },
-    data() {
-        return {
-            loudJokes: Boolean,
-        }
-    },
     methods: {
         loudJoke() {
-            console.log(this.loudFunny);
-            console.log(this.loudJokes);
+            this.$root.$emit(`makeCaps`, this.loudFunny);
         }
-    },
-    mounted() {
-        this.$root.$emit(`makeCaps`, this.loudFunny);
-    },
+    }
 }
 
 

@@ -6,26 +6,27 @@
 </template>
 
 <script>
-
+import cookies from 'vue-cookies';
 export default {
     name: "JokeButton",
     props: {
         normalJoke: String,
     },
-    data() {
-        return {
-            displayNormalJoke: Boolean,
-        }
-    },
     methods: {
         getJoke() {
             console.log(this.normalJoke);
+            this.$root.$emit(`generateJoke`, this.normalJoke);
+            cookies.set(`normaljoke`, this.normalJoke);
+
         }
     },
     mounted() {
-        this.$root.$emit(`generateJoke`, this.normalJoke);
+        let plainJoke = cookies.get(`normalJoke`);
+        console.log(plainJoke);
+        this.$root.$emit(plainJoke, this.normalJoke)
     }
 }
+
 
 </script>
 
